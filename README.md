@@ -117,19 +117,34 @@ kubectl port-forward -n loop-system deployment/loop 5678
 # Demos
 
 ## Squash
+### Outline
 - observe a bug in a go-java microservice app
 - attach debuggers to each of the running processes
 - determine the bug
 
+### Steps
+- open a (go) debugger on service 1
+- open a (java) debugger on service 2
+- set breakpoints on each
+- run a calculation, follow the code execution
+- patch the new image
+```bash
+kubectl patch deployment -n calc example-service2 -p '{"spec":{"template":{"spec":{"containers":[{"name":"example-service2","image":"soloio/example-service2is
+e:0.1.0"}]}}}}'
+```
+
 ## Loop
+### Outline
 - replace the broken service with a "fixed" version
 - observe that the app has a new bug
 - create a tap to capture traffic with a 500 response code
 - attach squash to the "sandboxed" process
 - replay the traffic to the "sandboxed" service
 - determine the bug
+### Steps
 
 ## Glooshot
+### Outline
 - review the service mesh bookinfo app
 - apply a chaos experiment to the ratings service
 - observe the reviews service fails (a cascading failure)
