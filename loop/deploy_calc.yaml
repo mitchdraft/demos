@@ -63,7 +63,7 @@ spec:
       containers:
       - env:
         - name: SERVICE2_URL
-        image: soloio/example-service2:v0.2.2
+        image: soloio/example-service2-java:v0.2.2
         # image: soloio/example-service2ise:0.1.0 # part 2, with loop
         imagePullPolicy: IfNotPresent
         name: example-service2

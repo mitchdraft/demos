@@ -112,3 +112,31 @@ kubectl port-forward -n bookinfo deploy/productpage-v1 9080
 k port-forward -n calc deploy/example-service1 8080
 kubectl port-forward -n loop-system deployment/loop 5678
 ```
+
+
+# Demos
+
+## Squash
+- observe a bug in a go-java microservice app
+- attach debuggers to each of the running processes
+- determine the bug
+
+## Loop
+- replace the broken service with a "fixed" version
+- observe that the app has a new bug
+- create a tap to capture traffic with a 500 response code
+- attach squash to the "sandboxed" process
+- replay the traffic to the "sandboxed" service
+- determine the bug
+
+## Glooshot
+- review the service mesh bookinfo app
+- apply a chaos experiment to the ratings service
+- observe the reviews service fails (a cascading failure)
+- note that the faults are removed after the experiment ends
+- review the experiment results
+- review the grafana logs
+- deploy a more resilient version of the app
+- apply a repeat experiment
+- observe that the experiment passes, teh cascading failure vulnerability has been fixed
+- review the grafana logs, there are no 500s
