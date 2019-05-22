@@ -92,6 +92,16 @@ supergloo apply routingrule trafficshifting \
     --destination glooshot.bookinfo-reviews-v4-9080:1
 ```
 
+#### Calculator app
+```bash
+kubectl create ns calc
+kubectl label namespace calc istio-injection=enabled
+kubectl apply -f loop/deploy_calc.yaml -n calc
+```
+- port forward (as specified below)
+  - visit url: http://localhost:8080
+  - expect: calculator to do the opposite of the specified operation
+
 
 
 
@@ -99,5 +109,6 @@ supergloo apply routingrule trafficshifting \
 ```bash
 kubectl port-forward -n grafana deployment/kubecon-eu-grafana 3000
 kubectl port-forward -n bookinfo deploy/productpage-v1 9080
+k port-forward -n calc deploy/example-service1 8080
 kubectl port-forward -n loop-system deployment/loop 5678
 ```
