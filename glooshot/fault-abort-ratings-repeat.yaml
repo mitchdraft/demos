@@ -2,7 +2,7 @@ apiVersion: glooshot.solo.io/v1
 kind: Experiment
 metadata:
   name: abort-ratings-metric-repeat
-  namespace: default
+  namespace: bookinfo
 spec:
   spec:
     duration: 30s

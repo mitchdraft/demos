@@ -6,7 +6,7 @@
   - install istio
   - set prometheus stats
   - deploy grafana
-  - configure grafana dashboards
+    - configure grafana dashboards
   - install loop
 - install the apps
   - bookstore
@@ -48,15 +48,43 @@ kubectl get cm -n glooshot glooshot-prometheus-server -o yaml | rg istio
 test 0 -lt `kubectl get cm -n glooshot glooshot-prometheus-server -o yaml | rg istio|wc -l`
 ```
 
-### Deploy Grafana
+### Deploy Grafana, configure dashboards
 ```bash
 kubectl create ns grafana
 kubectl apply -f install/tmpgrafana.yaml -n grafana
+# get password:
+kubectl get secret -n grafana kubecon-eu-grafana -o jsonpath='{.data.admin-password}'|base64 --decode
+## maybe it's: vlAMl8lkU9bmeiiToiYbnZkFixRIXJwRhejj6pIm
 ```
+- add data source:
+  - Prometheus
+  - URL: http://glooshot-prometheus-server.glooshot.svc.cluster.local
+  - click "Save and test"
+- create dashboards
+  - "+" -> "Create" -> "import"
+  - paste from `./glooshot/dashboard.json`
+
+### Deploy loop
+
+```bash
+kubectl apply -f res/loop.yaml
+```
+
+### install the apps
+
+#### bookinfo
+```bash
+kubectl create ns bookinfo
+kubectl label namespace bookinfo istio-injection=enabled
+kubectl apply -f glooshot/bookinfo.yaml -n bookinfo
+```
+
 
 
 
 ## Port forwards
 ```bash
 kubectl port-forward -n grafana deployment/kubecon-eu-grafana 3000
+kubectl port-forward deploy/productpage 9080
+kubectl port-forward -n loop-system deployment/loop 5678
 ```
