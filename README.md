@@ -113,7 +113,6 @@ k port-forward -n calc deploy/example-service1 8080
 kubectl port-forward -n loop-system deployment/loop 5678
 ```
 
-
 # Demos
 
 ## Squash
@@ -122,6 +121,9 @@ kubectl port-forward -n loop-system deployment/loop 5678
 - attach debuggers to each of the running processes
 - determine the bug
 
+### Initial condition expectations
+- example-service2 image is example-service2-java:v0.2.2
+
 ### Steps
 - open a (go) debugger on service 1
 - open a (java) debugger on service 2
@@ -129,9 +131,9 @@ kubectl port-forward -n loop-system deployment/loop 5678
 - run a calculation, follow the code execution
 - patch the new image
 ```bash
-kubectl patch deployment -n calc example-service2 -p '{"spec":{"template":{"spec":{"containers":[{"name":"example-service2","image":"soloio/example-service2is
-e:0.1.0"}]}}}}'
+kubectl patch deployment -n calc example-service2 -p '{"spec":{"template":{"spec":{"containers":[{"name":"example-service2","image":"soloio/example-service2ise:0.1.0"}]}}}}'
 ```
+- verify that the addition/subtraction bug has gone away
 
 ## Loop
 ### Outline
@@ -141,7 +143,19 @@ e:0.1.0"}]}}}}'
 - attach squash to the "sandboxed" process
 - replay the traffic to the "sandboxed" service
 - determine the bug
+### Initial condition expectations
+- example-service2 image is example-service2ise:v0.1.1
+- there are no envoyconfig or tap crds
+- `loopctl list` returns an empty list
 ### Steps
+```bash
+loopctl -h
+loopctl list
+# create some traffic, including 500s
+loopctl list # note that only the 500s are captured
+loopctl replay --id 1
+```
+
 
 ## Glooshot
 ### Outline
@@ -153,5 +167,49 @@ e:0.1.0"}]}}}}'
 - review the grafana logs
 - deploy a more resilient version of the app
 - apply a repeat experiment
-- observe that the experiment passes, teh cascading failure vulnerability has been fixed
+- observe that the experiment passes, the cascading failure vulnerability has been fixed
 - review the grafana logs, there are no 500s
+
+
+# Restore to pre-demo state
+## Squash demo portion
+- patch back the old image
+```bash
+kubectl patch deployment -n calc example-service2 -p '{"spec":{"template":{"spec":{"containers":[{"name":"example-service2","image":"soloio/example-service2-java:v0.2.2"}]}}}}'
+```
+- delete any lingering squash plank pods
+```bash
+kubectl delete pods -n squash-debugger --all
+```
+
+## Loop demo portion
+- remove envoyfilter and tap crds
+```bash
+kubectl delete envoyfilters -n loop-system --all
+kubectl delete taps -n loop-system --all
+```
+- clear out the records, deleting the pod will do
+```bash
+kubectl delete pods -n loop-system --all
+```
+- verify that list is empty
+```bash
+loopctl list
+```
+
+## Glooshot demo portion
+- restore vulnerable service route and delete resilient service route
+```bash
+kubectl delete routingrule -n glooshot reviews-resilient
+supergloo apply routingrule trafficshifting \
+    --namespace glooshot \
+    --name reviews-vulnerable \
+    --dest-upstreams glooshot.bookinfo-reviews-9080 \
+    --target-mesh glooshot.istio-istio-system \
+    --destination glooshot.bookinfo-reviews-v4-9080:1
+```
+- delete experiment and report crds
+```bash
+kubectl delete experiments -n glooshot --all
+kubectl delete reports -n glooshot --all
+```

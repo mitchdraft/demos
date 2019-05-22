@@ -15,7 +15,7 @@ spec:
     filterConfig:
       common_config:
         tds_config:
-          name: loop-system.test
+          name: loop-system.calc-ise
           config_source:
             initial_fetch_timeout: 1s
             api_config_source:
