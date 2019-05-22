@@ -169,6 +169,11 @@ loopctl replay --id 1
 - apply a repeat experiment
 - observe that the experiment passes, the cascading failure vulnerability has been fixed
 - review the grafana logs, there are no 500s
+### Steps
+- apply experiment
+```bash
+kubectl apply -f glooshot/fault-abort-ratings.yaml
+```
 
 
 # Restore to pre-demo state
@@ -213,3 +218,9 @@ supergloo apply routingrule trafficshifting \
 kubectl delete experiments -n glooshot --all
 kubectl delete reports -n glooshot --all
 ```
+
+
+
+
+## Notes
+- Loop's custom envoy seems to be interferring with supergloo's ability to translate faults into istio resources. The effect of the vulnerability experiment was not shown when I had loop set up and running in the same cluster.
