@@ -78,6 +78,19 @@ kubectl create ns bookinfo
 kubectl label namespace bookinfo istio-injection=enabled
 kubectl apply -f glooshot/bookinfo.yaml -n bookinfo
 ```
+- configure it for the demo
+  - port forward (as specified below)
+  - visit url: http://localhost:9080/productpage?u=normal
+  - before: page should rotate between versions of the reviews app (different star styles)
+  - after: stars should always be red (vulnerable v4 of app in use)
+```bash
+supergloo apply routingrule trafficshifting \
+    --namespace glooshot \
+    --name reviews-vulnerable \
+    --dest-upstreams glooshot.bookinfo-reviews-9080 \
+    --target-mesh glooshot.istio-istio-system \
+    --destination glooshot.bookinfo-reviews-v4-9080:1
+```
 
 
 
@@ -85,6 +98,6 @@ kubectl apply -f glooshot/bookinfo.yaml -n bookinfo
 ## Port forwards
 ```bash
 kubectl port-forward -n grafana deployment/kubecon-eu-grafana 3000
-kubectl port-forward deploy/productpage 9080
+kubectl port-forward -n bookinfo deploy/productpage-v1 9080
 kubectl port-forward -n loop-system deployment/loop 5678
 ```
