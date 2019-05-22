@@ -15,7 +15,7 @@ spec:
             comparisonOperator: ">"
     faults:
     - destinationServices:
-      - name: default-ratings-9080
+      - name: bookinfo-ratings-9080
         namespace: glooshot
       fault:
         abort:

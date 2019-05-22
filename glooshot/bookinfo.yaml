@@ -42,8 +42,6 @@ spec:
   replicas: 1
   template:
     metadata:
-      annotations:
-        sidecar.istio.io/proxyImage: soloio/proxyv2:loop.7
       labels:
         app: details
         version: v1
@@ -85,8 +83,6 @@ spec:
   replicas: 1
   template:
     metadata:
-      annotations:
-        sidecar.istio.io/proxyImage: soloio/proxyv2:loop.7
       labels:
         app: ratings
         version: v1
@@ -128,8 +124,6 @@ spec:
   replicas: 1
   template:
     metadata:
-      annotations:
-        sidecar.istio.io/proxyImage: soloio/proxyv2:loop.7
       labels:
         app: reviews
         version: v1
@@ -150,8 +144,6 @@ spec:
   replicas: 1
   template:
     metadata:
-      annotations:
-        sidecar.istio.io/proxyImage: soloio/proxyv2:loop.7
       labels:
         app: reviews
         version: v2
@@ -172,8 +164,6 @@ spec:
   replicas: 1
   template:
     metadata:
-      annotations:
-        sidecar.istio.io/proxyImage: soloio/proxyv2:loop.7
       labels:
         app: reviews
         version: v3
@@ -194,8 +184,6 @@ spec:
   replicas: 1
   template:
     metadata:
-      annotations:
-        sidecar.istio.io/proxyImage: soloio/proxyv2:loop.7
       labels:
         app: reviews
         version: v4
@@ -237,8 +225,6 @@ spec:
   replicas: 1
   template:
     metadata:
-      annotations:
-        sidecar.istio.io/proxyImage: soloio/proxyv2:loop.7
       labels:
         app: productpage
         version: v1
