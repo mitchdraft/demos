@@ -52,9 +52,9 @@ kubectl get secret -n grafana kubecon-eu-grafana -o jsonpath='{.data.admin-passw
   - "+" -> "Create" -> "import"
   - paste from `./glooshot/dashboard.json`
 
-### install the apps
+### Install the app
 
-#### bookinfo
+#### Bookinfo
 ```bash
 kubectl create ns bookinfo
 kubectl label namespace bookinfo istio-injection=enabled
@@ -78,7 +78,6 @@ supergloo apply routingrule trafficshifting \
 ```bash
 kubectl port-forward -n grafana deployment/kubecon-eu-grafana 3000
 kubectl port-forward -n bookinfo deploy/productpage-v1 9080
-kubectl port-forward -n loop-system deployment/loop 5678
 ```
 
 ## Glooshot
