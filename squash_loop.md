@@ -80,6 +80,12 @@ kubectl patch deployment -n calc example-service2 -p '{"spec":{"template":{"spec
 - there are no envoyconfig or tap crds
 - `loopctl list` returns an empty list
 ### Steps
+- apply the resources
+```bash
+kubectl apply -f loop/tap.yaml
+kubectl apply -f loop/envoyfilter.yaml
+```
+- use loop
 ```bash
 loopctl -h
 loopctl list
