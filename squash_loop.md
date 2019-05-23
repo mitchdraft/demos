@@ -1,3 +1,10 @@
+# Squash and Loop: Calculator app
+
+[KubeCon EU 2019 Chaos Debugging](https://kccnceu19.sched.com/event/MPXi)
+
+
+
+
 ### Setup glooshot
 ```bash
 # glooshot init

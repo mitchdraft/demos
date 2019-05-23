@@ -1,5 +1,7 @@
+# Glooshot: Bookinfo app
 
-# Glooshot: Bookinfo
+[KubeCon EU 2019 Chaos Debugging](https://kccnceu19.sched.com/event/MPXi)
+
 
 ### Setup glooshot
 ```bash
